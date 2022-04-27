@@ -8,8 +8,7 @@ import org.springframework.data.mongodb.core.mapping.Document
 class SchoolEntity(
     val schoolName: String,
     val latitude: BigDecimal,
-    val longitude: BigDecimal
-) {
+    val longitude: BigDecimal,
     @Id
     val id: String = ""
-}
+)

@@ -3,10 +3,12 @@ package com.example.springbackend.user.infrastructure.handler
 import com.example.springbackend.user.domain.api.UserApi
 import com.example.springbackend.user.domain.api.UserApiImpl
 import com.example.springbackend.user.infrastructure.request.UserSignInRequest
+import java.net.URI
 import org.springframework.stereotype.Component
 import org.springframework.web.reactive.function.server.ServerRequest
 import org.springframework.web.reactive.function.server.ServerResponse
 import org.springframework.web.reactive.function.server.awaitBody
+import org.springframework.web.reactive.function.server.buildAndAwait
 
 @Component
 class UserHandler(
@@ -14,8 +16,8 @@ class UserHandler(
 ) {
     suspend fun handleUserSignInRequest(serverRequest: ServerRequest): ServerResponse {
         val userSignInRequest = serverRequest.toUserSignInRequest()
-
-
+        userApi.createUser(userSignInRequest)
+        return ServerResponse.created(URI("/users")).buildAndAwait()
     }
 
     private suspend fun ServerRequest.toUserSignInRequest() =

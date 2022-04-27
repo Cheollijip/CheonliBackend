@@ -6,8 +6,7 @@ import org.springframework.data.mongodb.core.mapping.Document
 @Document
 class UserEntity(
     val code: String,
-    val schoolId: String
-) {
+    val schoolId: String,
     @Id
     val id: String = ""
-}
+)

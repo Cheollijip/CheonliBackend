@@ -6,6 +6,7 @@ plugins {
     kotlin("jvm") version PluginVersions.JVM_VERSION
     kotlin("plugin.spring") version PluginVersions.SPRING_PLUGIN_VERSION
     kotlin("plugin.jpa") version PluginVersions.JPA_PLUGIN_VERSION
+    kotlin("kapt") version PluginVersions.KAPT_VERSION
 }
 
 group = "com.chunlijib"
@@ -26,10 +27,11 @@ dependencies {
     implementation(Dependencies.JACKSON)
     implementation(Dependencies.KOTLIN_STDLIB)
     implementation(Dependencies.KOTLIN_REFLECT)
-    annotationProcessor(Dependencies.CONFIGURATION_PROCESSOR)
+    kapt(Dependencies.CONFIGURATION_PROCESSOR)
     testImplementation(Dependencies.SPRING_TEST)
     testImplementation(Dependencies.SECURITY_TEST)
     testImplementation(Dependencies.REACTOR_TEST)
+    implementation("io.netty:netty-resolver-dns-native-macos:4.1.76.Final:osx-aarch_64")
 }
 
 tasks.withType<KotlinCompile> {
