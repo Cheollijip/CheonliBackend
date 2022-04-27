@@ -1,0 +1,15 @@
+object Dependencies {
+    const val SPRING_SECURITY = "org.springframework.boot:spring-boot-starter-security"
+    const val COROUTINE_REACTOR = "org.jetbrains.kotlinx:kotlinx-coroutines-reactor"
+    const val REACTOR_COROUTINE_EXTENSION = "io.projectreactor.kotlin:reactor-kotlin-extensions"
+    const val WEBFLUX = "org.springframework.boot:spring-boot-starter-webflux"
+    const val VALIDATION = "org.springframework.boot:spring-boot-starter-validation"
+    const val JACKSON = "com.fasterxml.jackson.module:jackson-module-kotlin"
+    const val KOTLIN_REFLECT = "org.jetbrains.kotlin:kotlin-reflect"
+    const val KOTLIN_STDLIB = "org.jetbrains.kotlin:kotlin-stdlib-jdk8"
+    const val CONFIGURATION_PROCESSOR = "org.springframework.boot:spring-boot-configuration-processor"
+    const val SPRING_TEST = "org.springframework.boot:spring-boot-starter-test"
+    const val SECURITY_TEST = "org.springframework.security:spring-security-test"
+    const val REACTOR_TEST = "io.projectreactor:reactor-test"
+    const val REACTIVE_MONGODB = "org.springframework.boot:spring-boot-starter-data-mongodb-reactive"
+}

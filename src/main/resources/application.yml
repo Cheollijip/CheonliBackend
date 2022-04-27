@@ -1,0 +1,21 @@
+spring:
+  data:
+    mongodb:
+      auto-index-creation: true
+      authentication-database: ${AUTHENTICATION_DB}
+      database: cheonlijip
+      field-naming-strategy: org.springframework.data.mapping.model.SnakeCaseFieldNamingStrategy
+      host: ${MONGO_HOST}
+      password: ${MONGO_PASSWORD}
+      repositories:
+        type: reactive
+      port: ${MONGO_PORT:27017}
+      username: ${MONGO_USERNAME}
+      uri: mongodb+srv://${MONGO_USERNAME}:${MONGO_PASSWORD}@cheonlijip.fyczq.mongodb.net/cheonlijip?retryWrites=true&w=majority
+  jackson:
+    property-naming-strategy: SNAKE_CASE
+    date-format: yyyy-MM-dd'T'HH:mm:ss
+    time-zone: Asia/Seoul
+server:
+  port: ${SERVER_PORT}
+  shutdown: graceful
