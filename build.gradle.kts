@@ -31,7 +31,8 @@ dependencies {
     testImplementation(Dependencies.SPRING_TEST)
     testImplementation(Dependencies.SECURITY_TEST)
     testImplementation(Dependencies.REACTOR_TEST)
-    implementation("io.netty:netty-resolver-dns-native-macos:4.1.76.Final:osx-aarch_64")
+    implementation("io.jsonwebtoken:jjwt:0.9.1")
+    implementation("io.netty:netty-resolver-dns-native-macos:4.1.77.Final:osx-aarch_64")
 }
 
 tasks.withType<KotlinCompile> {
