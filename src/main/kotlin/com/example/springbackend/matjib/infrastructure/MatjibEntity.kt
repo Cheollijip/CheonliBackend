@@ -19,5 +19,5 @@ class MatjibEntity(
 
 class ScoreEntity(
     val userId: String,
-    val score: Int
+    val score: Double
 )

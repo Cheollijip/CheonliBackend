@@ -26,13 +26,17 @@ class MatjibSpiImpl(
         matjibRepository.save(matjib.toEntity()).awaitSingle()
     }
 
+    override suspend fun findById(matjibId: String): Matjib {
+        return matjibRepository.findById(ObjectId(matjibId)).awaitSingle().toDomain()
+    }
+
     private fun MatjibEntity.toDomain() =
         Matjib(
             description = this.description,
             name = this.name,
             longitude = this.location.x,
             latitude = this.location.y,
-            scores = this.scores.map { it.toDomain() },
+            scores = this.scores.map { it.toDomain() }.toMutableList(),
             address = this.address,
             id = this.id.toString(),
             schoolId = this.schoolId

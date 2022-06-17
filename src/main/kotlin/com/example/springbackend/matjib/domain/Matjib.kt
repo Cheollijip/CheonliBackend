@@ -5,13 +5,17 @@ class Matjib(
     val longitude: Double,
     val name: String,
     val description: String,
-    val scores: List<Score>,
+    val scores: MutableList<Score>,
     val address: String,
     val id: String = "",
     val schoolId: String
-)
+) {
+    fun addScore(userId: String, score: Double) {
+        scores.add(Score(userId, score))
+    }
+}
 
 class Score(
     val userId: String,
-    val score: Int
+    val score: Double
 )

@@ -14,6 +14,7 @@ class MatjibRouter(
         "/matjibs".nest {
             GET("", matjibHandler::handleGetMatjibList)
             POST("", matjibHandler::handleSaveMatjib)
+            POST("/{matjibId}", matjibHandler::handleSaveReview)
         }
     }
 }

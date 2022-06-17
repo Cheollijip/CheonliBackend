@@ -41,7 +41,7 @@ class MatjibApiImpl(
             latitude = this.latitude,
             score = this.scores.sumOf { it.score }.toDouble().div(this.scores.size),
             matjibId = this.id,
-            isScored = this.scores.firstOrNull { it.userId == user.id.toString() } != null,
+            isScored = this.scores.firstOrNull { it.userId == user.id } != null,
             distance = getDistance(GeoJsonPoint(school.longitude, school.latitude), GeoJsonPoint(this.longitude, this.latitude))
         )
     }
@@ -72,10 +72,18 @@ class MatjibApiImpl(
             longitude = matjib.longitude,
             schoolId = user.schoolId,
             description = matjib.description,
-            scores = listOf(Score(userId, matjib.score)),
+            scores = listOf(Score(userId, matjib.score)).toMutableList(),
             address = matjib.address,
             name = matjib.name,
         )
         matjibSpi.save(matjibDomain)
+    }
+
+    override suspend fun saveScore(matjibId: String, score: Double): Double {
+        val matjib = matjibSpi.findById(matjibId)
+        val userId = ReactiveSecurityContextHolder.getContext().awaitSingle().authentication.name
+        matjib.addScore(userId, score)
+        matjibSpi.save(matjib)
+        return matjib.scores.sumOf { it.score }.div(matjib.scores.size)
     }
 }
