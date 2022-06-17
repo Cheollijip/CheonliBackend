@@ -32,14 +32,14 @@ class SchoolRepositorySpiImpl(
     private fun SchoolDomain.toSchoolEntity() =
         SchoolEntity(
             schoolName = this.schoolName,
-            location = GeoJsonPoint(this.latitude, this.longitude)
+            location = GeoJsonPoint(this.longitude, this.latitude)
         )
 
     private fun SchoolEntity.toDomainObject() =
         SchoolDomain(
             schoolName = this.schoolName,
-            latitude = this.location.x,
-            longitude = this.location.y,
+            latitude = this.location.y,
+            longitude = this.location.x,
             id = this.id.toString()
         )
 }

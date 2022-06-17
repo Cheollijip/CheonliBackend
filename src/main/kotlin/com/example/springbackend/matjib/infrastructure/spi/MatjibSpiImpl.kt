@@ -56,7 +56,7 @@ class MatjibSpiImpl(
         MatjibEntity(
             name = this.name,
             address = this.address,
-            location = GeoJsonPoint(this.latitude, this.longitude),
+            location = GeoJsonPoint(this.longitude, this.latitude),
             scores = this.scores.map { ScoreEntity(it.userId, it.score) },
             description = this.description,
             schoolId = this.schoolId

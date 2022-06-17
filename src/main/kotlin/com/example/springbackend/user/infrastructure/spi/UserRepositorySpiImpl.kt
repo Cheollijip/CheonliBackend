@@ -13,7 +13,12 @@ class UserRepositorySpiImpl(
     private val userRepository: UserRepository
 ) : UserRepositorySpi {
     override suspend fun saveOrGetUserDomainObject(userDomain: UserDomain): UserDomain {
-        val userOrNull = userRepository.findById(ObjectId(userDomain.id)).awaitSingleOrNull()
+        val id = if (userDomain.id == "") {
+            ObjectId()
+        } else {
+            ObjectId(userDomain.id)
+        }
+        val userOrNull = userRepository.findById(id).awaitSingleOrNull()
         return userOrNull?.toUserDomain() ?: saveUser(userDomain)
     }
 

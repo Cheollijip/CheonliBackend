@@ -92,5 +92,6 @@ class MatjibApiImpl(
         }
 
         matjibSpi.delete(matjibId)
+        return 0.0
     }
 }
