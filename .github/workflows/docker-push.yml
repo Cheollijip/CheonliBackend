@@ -34,7 +34,7 @@ jobs:
           password: ${{ secrets.DOCKER_PASSWORD }}
 
       - name: Docker Build
-        run: docker build -t jhhong0509/mwoyeottheora .
+        run: docker build -t jhhong0509/ .
 
       - name: Push on Dockerhub
         run: docker push jhhong0509/mwoyeottheora
