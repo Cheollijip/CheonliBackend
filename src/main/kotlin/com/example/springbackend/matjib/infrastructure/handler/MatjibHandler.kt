@@ -1,7 +1,7 @@
 package com.example.springbackend.matjib.infrastructure.handler
 
+import com.example.springbackend.configuration.validate.RequestBodyValidator
 import com.example.springbackend.matjib.domain.api.MatjibApi
-import com.example.springbackend.matjib.infrastructure.ScoreEntity
 import com.example.springbackend.matjib.infrastructure.router.dtos.MatjibRequest
 import com.example.springbackend.matjib.infrastructure.router.dtos.ScoreRequest
 import java.net.URI
@@ -14,7 +14,8 @@ import org.springframework.web.reactive.function.server.buildAndAwait
 
 @Component
 class MatjibHandler(
-    private val matjibApi: MatjibApi
+    private val matjibApi: MatjibApi,
+    private val requestBodyValidator: RequestBodyValidator
 ) {
     suspend fun handleGetMatjibList(serverRequest: ServerRequest): ServerResponse {
         val matjibs = matjibApi.getOurMatjib()
@@ -24,14 +25,16 @@ class MatjibHandler(
 
     suspend fun handleSaveMatjib(serverRequest: ServerRequest): ServerResponse {
         val matjibRequest = serverRequest.awaitBody<MatjibRequest>()
+        requestBodyValidator.validate(matjibRequest)
         matjibApi.saveMatjib(matjibRequest)
         return ServerResponse.created(URI("/matjibs")).buildAndAwait()
     }
 
     suspend fun handleSaveReview(serverRequest: ServerRequest): ServerResponse {
         val matjibId = serverRequest.pathVariable("matjibId")
-        val score = serverRequest.awaitBody<ScoreRequest>()
-        val totalScore = matjibApi.saveScore(matjibId, score.score)
+        val scoreRequest = serverRequest.awaitBody<ScoreRequest>()
+        requestBodyValidator.validate(scoreRequest)
+        val totalScore = matjibApi.saveScore(matjibId, scoreRequest.score)
         return ServerResponse.created(URI("/matjibs")).bodyValueAndAwait(totalScore)
     }
 }
