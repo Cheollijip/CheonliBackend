@@ -1,4 +1,4 @@
-package com.example.springbackend.jwt.properties
+package com.example.springbackend.configuration.security.jwt.properties
 
 import org.springframework.boot.context.properties.ConfigurationProperties
 import org.springframework.boot.context.properties.ConstructorBinding

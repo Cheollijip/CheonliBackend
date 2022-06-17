@@ -2,27 +2,36 @@ package com.example.springbackend.configuration.security
 
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
+import org.springframework.http.HttpMethod
 import org.springframework.security.config.annotation.web.reactive.EnableWebFluxSecurity
+import org.springframework.security.config.web.server.SecurityWebFiltersOrder
 import org.springframework.security.config.web.server.ServerHttpSecurity
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
+import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.security.web.server.SecurityWebFilterChain
+import org.springframework.security.web.server.authentication.AuthenticationWebFilter
 
 @Configuration
 @EnableWebFluxSecurity
-class SecurityConfig {
-
+class SecurityConfig(
+    private val authenticationWebFilter: AuthenticationWebFilter
+) {
     @Bean
-    protected fun filterChain(http: ServerHttpSecurity): SecurityWebFilterChain? {
+    fun securityWebFilterChain(http: ServerHttpSecurity): SecurityWebFilterChain {
         return http
-            .httpBasic().disable()
-            .formLogin().disable()
-            .csrf().disable()
-            .cors().disable()
+            .addFilterAt(authenticationWebFilter, SecurityWebFiltersOrder.AUTHENTICATION)
             .authorizeExchange()
-            .anyExchange().permitAll()
-            .and().build()
+            .pathMatchers(HttpMethod.POST, "/users").permitAll()
+            .anyExchange()
+            .permitAll()
+            .and()
+            .csrf().disable()
+            .cors().and()
+            .build()
     }
 
     @Bean
-    fun passwordEncoder() = BCryptPasswordEncoder()
+    fun passwordEncoder(): PasswordEncoder {
+        return BCryptPasswordEncoder()
+    }
 }

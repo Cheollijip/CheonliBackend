@@ -1,6 +1,6 @@
 package com.example.springbackend.user.infrastructure.spi
 
-import com.example.springbackend.jwt.properties.JwtProperties
+import com.example.springbackend.configuration.security.jwt.properties.JwtProperties
 import com.example.springbackend.user.domain.spi.JwtTokenProviderSpi
 import io.jsonwebtoken.Jwts
 import io.jsonwebtoken.SignatureAlgorithm

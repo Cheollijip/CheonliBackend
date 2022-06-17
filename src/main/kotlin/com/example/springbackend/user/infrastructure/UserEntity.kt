@@ -1,12 +1,13 @@
 package com.example.springbackend.user.infrastructure
 
-import org.springframework.data.annotation.Id
+import org.bson.types.ObjectId
 import org.springframework.data.mongodb.core.mapping.Document
+import org.springframework.data.mongodb.core.mapping.MongoId
 
 @Document
 class UserEntity(
     val code: String,
     val schoolId: String,
-    @Id
-    val id: String = ""
+    @MongoId
+    var id: ObjectId? = null
 )

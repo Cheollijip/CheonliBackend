@@ -4,4 +4,5 @@ import com.example.springbackend.user.domain.UserDomain
 
 interface UserRepositorySpi {
     suspend fun saveOrGetUserDomainObject(userDomain: UserDomain): UserDomain
+    suspend fun findById(userId: String): UserDomain?
 }

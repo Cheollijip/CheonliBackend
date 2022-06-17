@@ -5,6 +5,7 @@ import com.example.springbackend.user.domain.spi.UserRepositorySpi
 import com.example.springbackend.user.infrastructure.UserEntity
 import kotlinx.coroutines.reactor.awaitSingle
 import kotlinx.coroutines.reactor.awaitSingleOrNull
+import org.bson.types.ObjectId
 import org.springframework.stereotype.Repository
 
 @Repository
@@ -12,7 +13,7 @@ class UserRepositorySpiImpl(
     private val userRepository: UserRepository
 ) : UserRepositorySpi {
     override suspend fun saveOrGetUserDomainObject(userDomain: UserDomain): UserDomain {
-        val userOrNull = userRepository.findById(userDomain.id).awaitSingleOrNull()
+        val userOrNull = userRepository.findById(ObjectId(userDomain.id)).awaitSingleOrNull()
         return userOrNull?.toUserDomain() ?: saveUser(userDomain)
     }
 
@@ -20,6 +21,10 @@ class UserRepositorySpiImpl(
         val userEntity = userDomain.toUserEntity()
         val savedUserEntity = userRepository.save(userEntity).awaitSingle()
         return savedUserEntity.toUserDomain()
+    }
+
+    override suspend fun findById(userId: String): UserDomain? {
+        return userRepository.findById(ObjectId(userId)).awaitSingleOrNull()?.toUserDomain()
     }
 
     private fun UserDomain.toUserEntity() =
@@ -32,6 +37,6 @@ class UserRepositorySpiImpl(
         UserDomain(
             code = this.code,
             schoolId = this.schoolId,
-            id = this.id
+            id = this.id.toString()
         )
 }

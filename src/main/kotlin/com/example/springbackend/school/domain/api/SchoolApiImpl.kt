@@ -30,8 +30,8 @@ class SchoolApiImpl(
 
     private fun LocationDomain.toSchoolDomain() =
         SchoolDomain(
-            latitude = this.latitude,
-            longitude = this.longitude,
+            latitude = this.latitude.toDouble(),
+            longitude = this.longitude.toDouble(),
             schoolName = this.placeName
         )
 

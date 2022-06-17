@@ -1,21 +1,23 @@
 package com.example.springbackend.matjib.infrastructure
 
-import org.springframework.data.annotation.Id
+import org.bson.types.ObjectId
 import org.springframework.data.mongodb.core.geo.GeoJsonPoint
 import org.springframework.data.mongodb.core.mapping.Document
+import org.springframework.data.mongodb.core.mapping.MongoId
 
 @Document
 class MatjibEntity(
-    @Id
-    val id: String,
     val location: GeoJsonPoint,
     val name: String,
     val description: String,
     val schoolId: String,
-    val scores: List<Score>
+    val scores: List<ScoreEntity>,
+    val address: String,
+    @MongoId
+    var id: ObjectId? = null
 )
 
-class Score(
+class ScoreEntity(
     val userId: String,
     val score: Int
 )

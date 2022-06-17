@@ -6,6 +6,8 @@ import com.example.springbackend.school.infrastructure.SchoolEntity
 import com.example.springbackend.school.infrastructure.repository.SchoolRepository
 import kotlinx.coroutines.reactor.awaitSingle
 import kotlinx.coroutines.reactor.awaitSingleOrNull
+import org.bson.types.ObjectId
+import org.springframework.data.mongodb.core.geo.GeoJsonPoint
 import org.springframework.stereotype.Repository
 
 @Repository
@@ -23,18 +25,21 @@ class SchoolRepositorySpiImpl(
         return savedSchoolEntity.toDomainObject()
     }
 
+    override suspend fun findById(schoolId: String): SchoolDomain? {
+        return schoolRepository.findById(ObjectId(schoolId)).awaitSingle().toDomainObject()
+    }
+
     private fun SchoolDomain.toSchoolEntity() =
         SchoolEntity(
             schoolName = this.schoolName,
-            latitude = this.latitude,
-            longitude = this.longitude
+            location = GeoJsonPoint(this.latitude, this.longitude)
         )
 
     private fun SchoolEntity.toDomainObject() =
         SchoolDomain(
             schoolName = this.schoolName,
-            latitude = this.latitude,
-            longitude = this.longitude,
-            id = this.id
+            latitude = this.location.x,
+            longitude = this.location.y,
+            id = this.id.toString()
         )
 }

@@ -1,7 +1,10 @@
 package com.example.springbackend.matjib.domain.api
 
 import com.example.springbackend.matjib.domain.Matjib
+import com.example.springbackend.matjib.infrastructure.router.dtos.MatjibRequest
+import com.example.springbackend.matjib.infrastructure.router.dtos.MatjibResponse
 
 interface MatjibApi {
-    fun getOurMatjib(): List<Matjib>
+    suspend fun getOurMatjib(): List<MatjibResponse>
+    suspend fun saveMatjib(matjib: MatjibRequest)
 }
