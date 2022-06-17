@@ -12,7 +12,7 @@ class UserRouter(
 
     @Bean
     fun routeUser() = coRouter {
-        "users".nest {
+        "/users".nest {
             POST("", userHandler::handleUserSignInRequest)
         }
     }
