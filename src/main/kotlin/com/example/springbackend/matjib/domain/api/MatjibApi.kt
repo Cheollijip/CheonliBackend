@@ -6,5 +6,5 @@ import com.example.springbackend.matjib.infrastructure.router.dtos.MatjibRespons
 interface MatjibApi {
     suspend fun getOurMatjib(): List<MatjibResponse>
     suspend fun saveMatjib(matjib: MatjibRequest)
-    suspend fun saveScore(matjibId: String, score: Double): Double
+    suspend fun saveOrDeleteScore(matjibId: String, score: Double): Double
 }

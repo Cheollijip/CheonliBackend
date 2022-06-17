@@ -34,7 +34,7 @@ class MatjibHandler(
         val matjibId = serverRequest.pathVariable("matjibId")
         val scoreRequest = serverRequest.awaitBody<ScoreRequest>()
         requestBodyValidator.validate(scoreRequest)
-        val totalScore = matjibApi.saveScore(matjibId, scoreRequest.score)
+        val totalScore = matjibApi.saveOrDeleteScore(matjibId, scoreRequest.score)
         return ServerResponse.created(URI("/matjibs")).bodyValueAndAwait(totalScore)
     }
 }

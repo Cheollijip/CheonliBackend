@@ -30,6 +30,10 @@ class MatjibSpiImpl(
         return matjibRepository.findById(ObjectId(matjibId)).awaitSingle().toDomain()
     }
 
+    override suspend fun delete(matjibId: String) {
+        matjibRepository.deleteById(ObjectId(matjibId))
+    }
+
     private fun MatjibEntity.toDomain() =
         Matjib(
             description = this.description,

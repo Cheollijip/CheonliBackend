@@ -81,11 +81,16 @@ class MatjibApiImpl(
         matjibSpi.save(matjibDomain)
     }
 
-    override suspend fun saveScore(matjibId: String, score: Double): Double {
+    override suspend fun saveOrDeleteScore(matjibId: String, score: Double): Double {
         val matjib = matjibSpi.findById(matjibId)
         val userId = ReactiveSecurityContextHolder.getContext().awaitSingle().authentication.name
         matjib.addScore(userId, score)
         matjibSpi.save(matjib)
-        return matjib.scores.sumOf { it.score }.div(matjib.scores.size)
+        val sumScore = matjib.scores.sumOf { it.score }.div(matjib.scores.size)
+        if (sumScore > 3.0) {
+            return sumScore
+        }
+
+        matjibSpi.delete(matjibId)
     }
 }

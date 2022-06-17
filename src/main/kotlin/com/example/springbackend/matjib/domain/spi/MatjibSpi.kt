@@ -8,4 +8,5 @@ interface MatjibSpi {
     suspend fun getMatjibs(schoolId: String): List<Matjib>
     suspend fun save(matjib: Matjib)
     suspend fun findById(matjibId: String): Matjib
+    suspend fun delete(matjibId: String)
 }
