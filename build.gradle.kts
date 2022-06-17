@@ -33,6 +33,7 @@ dependencies {
     testImplementation(Dependencies.REACTOR_TEST)
     implementation("io.jsonwebtoken:jjwt:0.9.1")
     implementation("io.netty:netty-resolver-dns-native-macos:4.1.77.Final:osx-aarch_64")
+    implementation("javax.xml.bind:jaxb-api:2.4.0-b180830.0359")
 }
 
 tasks.withType<KotlinCompile> {
