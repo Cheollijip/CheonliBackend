@@ -57,3 +57,7 @@ noArg {
     annotation("javax.persistence.MappedSuperclass")
     annotation("javax.persistence.Embeddable")
 }
+
+tasks.getByName<Jar>("jar") {
+    enabled = false
+}
