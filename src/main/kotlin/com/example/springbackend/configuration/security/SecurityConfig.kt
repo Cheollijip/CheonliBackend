@@ -23,7 +23,7 @@ class SecurityConfig(
             .authorizeExchange()
             .pathMatchers(HttpMethod.POST, "/users").permitAll()
             .anyExchange()
-            .permitAll()
+            .authenticated()
             .and()
             .csrf().disable()
             .cors().and()
