@@ -6,8 +6,10 @@ import com.example.springbackend.matjib.domain.spi.MatjibSpi
 import com.example.springbackend.matjib.infrastructure.router.dtos.MatjibRequest
 import com.example.springbackend.matjib.infrastructure.router.dtos.MatjibResponse
 import com.example.springbackend.school.domain.SchoolDomain
+import com.example.springbackend.school.domain.exceptions.SchoolNotFoundException
 import com.example.springbackend.school.domain.spi.SchoolRepositorySpi
 import com.example.springbackend.user.domain.UserDomain
+import com.example.springbackend.user.domain.exceptions.UserNotFoundException
 import com.example.springbackend.user.domain.spi.UserRepositorySpi
 import kotlin.math.acos
 import kotlin.math.cos
@@ -25,8 +27,8 @@ class MatjibApiImpl(
 ) : MatjibApi {
     override suspend fun getOurMatjib(): List<MatjibResponse> {
         val userId = ReactiveSecurityContextHolder.getContext().awaitSingle().authentication.name
-        val user = userRepositorySpi.findById(userId) ?: TODO()
-        val school = schoolRepositorySpi.findById(user.schoolId)!!
+        val user = userRepositorySpi.findById(userId) ?: throw UserNotFoundException("User Not Found")
+        val school = schoolRepositorySpi.findById(user.schoolId) ?: throw SchoolNotFoundException("School Not Found")
         val matjibs = matjibSpi.getMatjibs(school.id)
         return matjibs.map { it.toMatjibResponse(school, user) }
     }
@@ -39,7 +41,7 @@ class MatjibApiImpl(
             schoolName = school.schoolName,
             longitude = this.longitude,
             latitude = this.latitude,
-            score = this.scores.sumOf { it.score }.toDouble().div(this.scores.size),
+            score = this.scores.sumOf { it.score }.div(this.scores.size),
             matjibId = this.id,
             isScored = this.scores.firstOrNull { it.userId == user.id } != null,
             distance = getDistance(GeoJsonPoint(school.longitude, school.latitude), GeoJsonPoint(this.longitude, this.latitude))
@@ -66,7 +68,7 @@ class MatjibApiImpl(
 
     override suspend fun saveMatjib(matjib: MatjibRequest) {
         val userId = ReactiveSecurityContextHolder.getContext().awaitSingle().authentication.name
-        val user = userRepositorySpi.findById(userId) ?: TODO()
+        val user = userRepositorySpi.findById(userId) ?: throw UserNotFoundException("User Not Found")
         val matjibDomain = Matjib(
             latitude = matjib.latitude,
             longitude = matjib.longitude,
