@@ -4,6 +4,9 @@ import com.example.springbackend.user.infrastructure.UserEntity
 import org.bson.types.ObjectId
 import org.springframework.data.repository.reactive.ReactiveCrudRepository
 import org.springframework.stereotype.Repository
+import reactor.core.publisher.Mono
 
 @Repository
-interface UserRepository : ReactiveCrudRepository<UserEntity, ObjectId>
+interface UserRepository : ReactiveCrudRepository<UserEntity, ObjectId> {
+    fun findBySchoolIdAndCode(schoolId: String, code: String): Mono<UserEntity>
+}
