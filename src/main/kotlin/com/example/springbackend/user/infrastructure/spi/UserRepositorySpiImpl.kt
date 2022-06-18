@@ -1,6 +1,7 @@
 package com.example.springbackend.user.infrastructure.spi
 
 import com.example.springbackend.user.domain.UserDomain
+import com.example.springbackend.user.domain.exceptions.UserAlreadyExistsException
 import com.example.springbackend.user.domain.spi.UserRepositorySpi
 import com.example.springbackend.user.infrastructure.UserEntity
 import kotlinx.coroutines.reactor.awaitSingle
@@ -12,19 +13,22 @@ import org.springframework.stereotype.Repository
 class UserRepositorySpiImpl(
     private val userRepository: UserRepository
 ) : UserRepositorySpi {
-    override suspend fun saveOrGetUserDomainObject(userDomain: UserDomain): UserDomain {
-        val userOrNull = userRepository.findBySchoolIdAndCode(userDomain.schoolId, userDomain.code).awaitSingleOrNull()
-        return userOrNull?.toUserDomain() ?: saveUser(userDomain)
-    }
-
-    private suspend fun saveUser(userDomain: UserDomain): UserDomain {
+    override suspend fun saveUser(userDomain: UserDomain): UserDomain {
         val userEntity = userDomain.toUserEntity()
+        userRepository.findByCode(userDomain.code).awaitSingleOrNull()?.let {
+            throw UserAlreadyExistsException("User Already Exists")
+        }
+
         val savedUserEntity = userRepository.save(userEntity).awaitSingle()
         return savedUserEntity.toUserDomain()
     }
 
     override suspend fun findById(userId: String): UserDomain? {
         return userRepository.findById(ObjectId(userId)).awaitSingleOrNull()?.toUserDomain()
+    }
+
+    override suspend fun findByCode(code: String): UserDomain? {
+        return userRepository.findByCode(code).awaitSingleOrNull()?.toUserDomain()
     }
 
     private fun UserDomain.toUserEntity() =

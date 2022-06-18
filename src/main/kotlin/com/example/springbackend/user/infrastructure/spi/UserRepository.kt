@@ -8,5 +8,5 @@ import reactor.core.publisher.Mono
 
 @Repository
 interface UserRepository : ReactiveCrudRepository<UserEntity, ObjectId> {
-    fun findBySchoolIdAndCode(schoolId: String, code: String): Mono<UserEntity>
+    fun findByCode(code: String): Mono<UserEntity>
 }
