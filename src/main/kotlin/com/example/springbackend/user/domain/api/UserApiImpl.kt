@@ -1,6 +1,8 @@
 package com.example.springbackend.user.domain.api
 
 import com.example.springbackend.school.domain.api.SchoolApi
+import com.example.springbackend.school.domain.exceptions.SchoolNotFoundException
+import com.example.springbackend.school.domain.spi.SchoolRepositorySpi
 import com.example.springbackend.user.domain.UserDomain
 import com.example.springbackend.user.domain.exceptions.UserNotFoundException
 import com.example.springbackend.user.domain.spi.JwtTokenProviderSpi
@@ -14,6 +16,7 @@ import org.springframework.stereotype.Service
 class UserApiImpl(
     private val userRepositorySpi: UserRepositorySpi,
     private val schoolApi: SchoolApi,
+    private val schoolRepositorySpi: SchoolRepositorySpi,
     private val jwtTokenProviderSpi: JwtTokenProviderSpi
 ) : UserApi {
     override suspend fun userSignUp(request: UserSignUpRequest): UserSignInResponse {
@@ -21,7 +24,7 @@ class UserApiImpl(
         val userDomain = request.toUserDomain(school.id)
         val userDomainFromDB = userRepositorySpi.saveUser(userDomain)
         val accessToken = jwtTokenProviderSpi.generateToken(userDomainFromDB.id)
-        return UserSignInResponse(accessToken)
+        return UserSignInResponse(accessToken, school.schoolName)
     }
 
     private fun UserSignUpRequest.toUserDomain(schoolId: String) =
@@ -32,7 +35,8 @@ class UserApiImpl(
 
     override suspend fun userSignIn(request: UserSignInRequest): UserSignInResponse {
         val user = userRepositorySpi.findByCode(request.code) ?: throw UserNotFoundException("User Not Found")
+        val school = schoolRepositorySpi.findById(user.schoolId) ?: throw SchoolNotFoundException("School Not Found")
         val accessToken = jwtTokenProviderSpi.generateToken(user.id)
-        return UserSignInResponse(accessToken)
+        return UserSignInResponse(accessToken, school.schoolName)
     }
 }
