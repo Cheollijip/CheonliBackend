@@ -22,7 +22,7 @@ class MatjibSpiImpl(
         return schools.map { it.toDomain() }.toList()
     }
 
-    override suspend fun zsave(matjib: Matjib) {
+    override suspend fun save(matjib: Matjib) {
         matjibRepository.save(matjib.toEntity()).awaitSingle()
     }
 
