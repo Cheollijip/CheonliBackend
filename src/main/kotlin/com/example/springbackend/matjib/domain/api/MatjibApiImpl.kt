@@ -19,6 +19,7 @@ import kotlinx.coroutines.reactor.awaitSingle
 import org.springframework.data.mongodb.core.geo.GeoJsonPoint
 import org.springframework.security.core.context.ReactiveSecurityContextHolder
 import org.springframework.stereotype.Service
+import org.springframework.transaction.annotation.Transactional
 
 @Service
 class MatjibApiImpl(
@@ -86,11 +87,11 @@ class MatjibApiImpl(
         matjibSpi.save(matjibDomain)
     }
 
+    @Transactional
     override suspend fun saveOrDeleteScore(matjibId: String, score: Double): Double {
         val matjib = matjibSpi.findById(matjibId)
         val userId = ReactiveSecurityContextHolder.getContext().awaitSingle().authentication.name
         matjib.addScore(userId, score)
-        matjibSpi.save(matjib)
         val sumScore = matjib.scores.sumOf { it.score }.div(matjib.scores.size)
         if (sumScore > 3.0) {
             return sumScore
