@@ -16,7 +16,7 @@ import org.springframework.stereotype.Repository
 @Repository
 class MatjibSpiImpl(
     private val matjibRepository: MatjibRepository
-): MatjibSpi {
+) : MatjibSpi {
     override suspend fun getMatjibs(schoolId: String): List<Matjib> {
         val schools = matjibRepository.findAllBySchoolId(schoolId)
         return schools.map { it.toDomain() }.toList()
@@ -60,6 +60,10 @@ class MatjibSpiImpl(
             scores = this.scores.map { ScoreEntity(it.userId, it.score) },
             description = this.description,
             schoolId = this.schoolId,
-            id = ObjectId(this.id)
+            id = if (this.id.isEmpty()) {
+                null
+            } else {
+                ObjectId(this.id)
+            }
         )
 }
