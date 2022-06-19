@@ -11,7 +11,9 @@ class Matjib(
     val schoolId: String
 ) {
     fun addScore(userId: String, score: Double) {
-        scores.add(Score(userId, score))
+        if (scores.firstOrNull { it.userId == userId } == null) {
+            scores.add(Score(userId, score))
+        }
     }
 }
 
