@@ -9,5 +9,6 @@ class KakaoApiProperty(
     val restApiKey: String,
     val baseUrl: String,
     val searchEndpoint: String,
+    val addressEndpoint: String,
     val authorizationPrefix: String
 )

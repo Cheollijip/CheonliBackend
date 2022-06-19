@@ -7,6 +7,7 @@ import com.example.springbackend.matjib.infrastructure.router.dtos.MatjibRequest
 import com.example.springbackend.matjib.infrastructure.router.dtos.MatjibResponse
 import com.example.springbackend.school.domain.SchoolDomain
 import com.example.springbackend.school.domain.exceptions.SchoolNotFoundException
+import com.example.springbackend.school.domain.spi.LocationSpi
 import com.example.springbackend.school.domain.spi.SchoolRepositorySpi
 import com.example.springbackend.user.domain.UserDomain
 import com.example.springbackend.user.domain.exceptions.UserNotFoundException
@@ -23,7 +24,8 @@ import org.springframework.stereotype.Service
 class MatjibApiImpl(
     private val matjibSpi: MatjibSpi,
     private val userRepositorySpi: UserRepositorySpi,
-    private val schoolRepositorySpi: SchoolRepositorySpi
+    private val schoolRepositorySpi: SchoolRepositorySpi,
+    private val locationSpi: LocationSpi
 ) : MatjibApi {
     override suspend fun getOurMatjib(): List<MatjibResponse> {
         val userId = ReactiveSecurityContextHolder.getContext().awaitSingle().authentication.name
@@ -44,7 +46,10 @@ class MatjibApiImpl(
             score = this.scores.sumOf { it.score }.div(this.scores.size),
             matjibId = this.id,
             isScored = this.scores.firstOrNull { it.userId == user.id } != null,
-            distance = getDistance(GeoJsonPoint(school.longitude, school.latitude), GeoJsonPoint(this.longitude, this.latitude))
+            distance = getDistance(
+                GeoJsonPoint(school.longitude, school.latitude),
+                GeoJsonPoint(this.longitude, this.latitude)
+            )
         )
     }
 
@@ -75,7 +80,7 @@ class MatjibApiImpl(
             schoolId = user.schoolId,
             description = matjib.description,
             scores = listOf(Score(userId, matjib.score)).toMutableList(),
-            address = matjib.address,
+            address = locationSpi.getAddressFromCoordinate(matjib.longitude, matjib.latitude)!!,
             name = matjib.name,
         )
         matjibSpi.save(matjibDomain)

@@ -13,7 +13,5 @@ class MatjibRequest(
     @NotBlank
     val name: String,
     @NotBlank
-    val description: String,
-    @NotBlank
-    val address: String
+    val description: String
 )

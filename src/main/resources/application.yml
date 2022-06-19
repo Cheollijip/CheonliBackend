@@ -19,6 +19,7 @@ kakao:
     authorization-prefix: ${KAKAO_AUTHORIZATION_PREFIX}
     base-url: ${KAKAO_BASE_URL}
     search-endpoint: ${KAKAO_KEYWORD_SEARCH_ENDPOINT}
+    address-endpoint: ${KAKAO_ADDRESS_SEARCH_ENDPOINT}
     rest-api-key: ${KAKAO_REST_API_KEY}
 jwt:
   secret-key: ${JWT_SECRET_KEY}
