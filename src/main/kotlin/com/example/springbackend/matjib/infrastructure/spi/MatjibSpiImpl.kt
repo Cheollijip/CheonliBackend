@@ -22,7 +22,7 @@ class MatjibSpiImpl(
         return schools.map { it.toDomain() }.toList()
     }
 
-    override suspend fun save(matjib: Matjib) {
+    override suspend fun zsave(matjib: Matjib) {
         matjibRepository.save(matjib.toEntity()).awaitSingle()
     }
 
@@ -59,6 +59,7 @@ class MatjibSpiImpl(
             location = GeoJsonPoint(this.longitude, this.latitude),
             scores = this.scores.map { ScoreEntity(it.userId, it.score) },
             description = this.description,
-            schoolId = this.schoolId
+            schoolId = this.schoolId,
+            id = ObjectId(this.id)
         )
 }

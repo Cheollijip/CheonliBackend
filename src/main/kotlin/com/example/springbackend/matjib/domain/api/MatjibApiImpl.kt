@@ -92,6 +92,7 @@ class MatjibApiImpl(
         val matjib = matjibSpi.findById(matjibId)
         val userId = ReactiveSecurityContextHolder.getContext().awaitSingle().authentication.name
         matjib.addScore(userId, score)
+        matjibSpi.save(matjib)
         val sumScore = matjib.scores.sumOf { it.score }.div(matjib.scores.size)
         if (sumScore > 3.0) {
             return sumScore
