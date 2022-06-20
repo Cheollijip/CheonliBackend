@@ -30,7 +30,7 @@ class ErrorWebExchangeHandler(
     applicationContext
 ) {
 
-    init {
+      init {
         super.setMessageReaders(serverCodecConfigurer.readers)
         super.setMessageWriters(serverCodecConfigurer.writers)
     }

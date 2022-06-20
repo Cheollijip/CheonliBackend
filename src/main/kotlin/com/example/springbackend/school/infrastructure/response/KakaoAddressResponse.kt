@@ -10,7 +10,7 @@ class KakaoAddressResponse(
 
 @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy::class)
 class AddressResponse(
-    val roadAddress: RoadAddressResponse
+    val roadAddress: RoadAddressResponse?
 )
 
 @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy::class)

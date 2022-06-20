@@ -81,7 +81,7 @@ class MatjibApiImpl(
             schoolId = user.schoolId,
             description = matjib.description,
             scores = listOf(Score(userId, matjib.score)).toMutableList(),
-            address = locationSpi.getAddressFromCoordinate(matjib.longitude, matjib.latitude)!!,
+            address = locationSpi.getAddressFromCoordinate(matjib.longitude, matjib.latitude) ?: " ",
             name = matjib.name,
         )
         matjibSpi.save(matjibDomain)
